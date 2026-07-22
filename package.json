@@ -1,0 +1,26 @@
+{
+	"name": "github-pr-linker",
+	"version": "1.0.0",
+	"description": "Obsidian plugin that turns GitHub pull request references into Markdown links",
+	"main": "main.js",
+	"type": "module",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"test": "vitest run",
+		"version": "node version-bump.mjs && git add manifest.json versions.json"
+	},
+	"keywords": [
+		"obsidian",
+		"obsidian-plugin",
+		"github"
+	],
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^22.15.17",
+		"esbuild": "0.25.5",
+		"obsidian": "latest",
+		"typescript": "^5.8.3",
+		"vitest": "^3.2.4"
+	}
+}
