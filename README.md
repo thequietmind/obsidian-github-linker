@@ -13,18 +13,34 @@ Write a reference like `repo#1234`, select it, run the **Link GitHub pull reques
 ```text
 repo#123
 owner/repo#123
+repo/pull/123
+owner/repo/pull/123
+https://github.com/owner/repo/pull/123
 ```
 
-- `repo#123` uses the **Default GitHub owner** from the plugin settings.
-- `owner/repo#123` links to that owner directly, ignoring the default.
+- `repo#123` and `repo/pull/123` use the **Default GitHub owner** from the plugin settings.
+- `owner/repo#123`, `owner/repo/pull/123`, and full URLs link to that owner directly, ignoring the default.
 - Owner and repository names may contain letters, numbers, hyphens, underscores, and periods.
 - The pull request number must contain only digits.
+- URLs may use `http` or `https`, include `www.`, and carry extra path segments, query strings, or fragments (e.g. `/files` or `#issuecomment-456`). The generated link always points at the pull request itself, so deep-link suffixes are dropped.
 
-The selected text is preserved as the link label, so `octocat/hello-world#789` becomes:
+For `repo#123` and `owner/repo#123`, the selected text is preserved as the link label, so `octocat/hello-world#789` becomes:
 
 ```md
 [octocat/hello-world#789](https://github.com/octocat/hello-world/pull/789)
 ```
+
+For `/pull/` paths and URLs, the label is rewritten to the short reference form. By default `https://github.com/octocat/hello-world/pull/789` becomes:
+
+```md
+[hello-world#789](https://github.com/octocat/hello-world/pull/789)
+```
+
+The **Owner in link label** setting controls whether these rewritten labels include the owner:
+
+- **Hide owner** (default) — always `repo#123`.
+- **Show owner** — always `owner/repo#123`.
+- **Show owner only when it differs from the default owner** — `repo#123` for your own repositories, `owner/repo#123` for everyone else's.
 
 If nothing is selected, the selection does not match a supported format, or no default owner is configured for an ownerless reference, the plugin shows a notice and leaves your text untouched.
 
@@ -40,7 +56,7 @@ If nothing is selected, the selection does not match a supported format, or no d
 ## Usage
 
 1. Open **Settings → GitHub PR Linker** and set your **Default GitHub owner** (your GitHub username or organization, e.g. `thequietmind`).
-2. In a note, type a pull request reference such as `today#123` or `owner/repo#456`.
+2. In a note, type a pull request reference such as `today#123` or `owner/repo#456`, a path such as `today/pull/123`, or paste a pull request URL.
 3. Select the reference.
 4. Open the command palette (`Cmd/Ctrl+P`) and run **Link GitHub pull request**.
 

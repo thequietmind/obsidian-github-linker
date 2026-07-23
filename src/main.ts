@@ -33,16 +33,17 @@ export default class GitHubPrLinkerPlugin extends Plugin {
 		const result = buildPullRequestLink(
 			selection,
 			this.settings.defaultOwner,
+			this.settings.ownerLabelMode,
 		);
 		if (result.status === 'invalid') {
 			new Notice(
-				'Selection is not a GitHub pull request reference such as repo#123 or owner/repo#123.',
+				'Selection is not a GitHub pull request reference such as repo#123, owner/repo#123, repo/pull/123, or a github.com pull request URL.',
 			);
 			return;
 		}
 		if (result.status === 'missing-owner') {
 			new Notice(
-				'Configure a default GitHub owner or use owner/repo#123.',
+				'Configure a default GitHub owner or include the owner, e.g. owner/repo#123 or owner/repo/pull/123.',
 			);
 			return;
 		}

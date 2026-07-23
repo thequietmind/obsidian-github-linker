@@ -4,20 +4,33 @@ import {
 	Setting,
 	SettingDefinitionItem,
 } from 'obsidian';
+import type { OwnerLabelMode } from './link';
 import type GitHubPrLinkerPlugin from './main';
 
 export interface GitHubPrLinkerSettings {
 	defaultOwner: string;
+	ownerLabelMode: OwnerLabelMode;
 }
 
 export const DEFAULT_SETTINGS: GitHubPrLinkerSettings = {
 	defaultOwner: '',
+	ownerLabelMode: 'hide',
 };
 
 const OWNER_SETTING = {
 	name: 'Default GitHub owner',
 	desc: 'GitHub username or organization used when the selected reference does not include an owner, e.g. repo#123.',
 	placeholder: 'Enter your username',
+};
+
+const OWNER_LABEL_SETTING = {
+	name: 'Owner in link label',
+	desc: 'Whether the link label includes the owner when linking repo/pull/123 or a GitHub pull request URL. References like owner/repo#123 always keep your selected text as the label.',
+	options: {
+		hide: 'Hide owner',
+		show: 'Show owner',
+		auto: 'Show owner only when it differs from the default owner',
+	} satisfies Record<OwnerLabelMode, string>,
 };
 
 export class GitHubPrLinkerSettingTab extends PluginSettingTab {
@@ -40,6 +53,16 @@ export class GitHubPrLinkerSettingTab extends PluginSettingTab {
 					defaultValue: DEFAULT_SETTINGS.defaultOwner,
 				},
 			},
+			{
+				name: OWNER_LABEL_SETTING.name,
+				desc: OWNER_LABEL_SETTING.desc,
+				control: {
+					type: 'dropdown',
+					key: 'ownerLabelMode',
+					options: OWNER_LABEL_SETTING.options,
+					defaultValue: DEFAULT_SETTINGS.ownerLabelMode,
+				},
+			},
 		];
 	}
 
@@ -58,6 +81,20 @@ export class GitHubPrLinkerSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.defaultOwner)
 					.onChange(async (value) => {
 						this.plugin.settings.defaultOwner = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName(OWNER_LABEL_SETTING.name)
+			.setDesc(OWNER_LABEL_SETTING.desc)
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions(OWNER_LABEL_SETTING.options)
+					.setValue(this.plugin.settings.ownerLabelMode)
+					.onChange(async (value) => {
+						this.plugin.settings.ownerLabelMode =
+							value as OwnerLabelMode;
 						await this.plugin.saveSettings();
 					}),
 			);
