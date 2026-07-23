@@ -1,6 +1,6 @@
 {
 	"name": "github-pr-linker",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Obsidian plugin that turns GitHub pull request references into Markdown links",
 	"main": "main.js",
 	"type": "module",
