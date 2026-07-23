@@ -5,6 +5,6 @@
 	"minAppVersion": "1.0.0",
 	"description": "Turn GitHub pull request references like repo#123 into Markdown links.",
 	"author": "Quiet Mind Creative",
-	"authorUrl": "https://github.com/thequietmind",
+	"authorUrl": "https://quietmindcreative.com/",
 	"isDesktopOnly": false
 }
